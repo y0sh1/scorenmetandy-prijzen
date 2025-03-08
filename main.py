@@ -25,8 +25,8 @@ def extract_fuel_prices(url):
     fuel_prices = {fuel: float(price.replace(',', '.')) for fuel, price in matches}
     json_output = json.dumps(fuel_prices, indent=4)
 
-    message = "*Fuel Prices Report* :fuelpump:\n"
-    emoji_dict = {"diesel": ":oil:", "Euro 95": ":fuelpump:", "Superplus": ":racecar:"}
+    message = ":rocket: *Nieuwe Scoren met Andy Prijzne* :sunglasses:\n"
+    emoji_dict = {"diesel": ":oil_drum:", "Euro 95": ":fuelpump:", "Superplus": ":racing_car    :"}
     for fuel, price in fuel_prices.items():
         message += f"{emoji_dict.get(fuel, ':fuelpump:')} *{fuel}*: €{price:.2f}\n"
 
