@@ -1,2 +1,3 @@
 examples/*
 .env
+.DS_Store
