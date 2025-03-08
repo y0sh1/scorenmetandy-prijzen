@@ -3,7 +3,8 @@ version: '3.8'
 services:
   fuel-price-checker:
     build: .
-    image: ghcr.io/y0sh1/scorenmetandy-prijzen:latest
+    image: ghcr.io/y0sh1/scorenmetandy-prijzen
+    
     environment:
       - SLACK_WEBHOOK_URL=${SLACK_WEBHOOK_URL}
     command: python main.py
