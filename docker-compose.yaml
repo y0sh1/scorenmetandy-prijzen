@@ -1,0 +1,8 @@
+version: '3.8'
+
+services:
+  fuel-price-checker:
+    build: .
+    environment:
+      - SLACK_WEBHOOK_URL=${SLACK_WEBHOOK_URL}
+    command: python main.py
