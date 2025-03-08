@@ -17,3 +17,4 @@ spec:
             - configMapRef:
                 name: fuel-price-checker-config
             command: ["python", "main.py"]
+          restartPolicy: Never
