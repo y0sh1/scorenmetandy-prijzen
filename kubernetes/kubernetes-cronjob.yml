@@ -1,0 +1,19 @@
+apiVersion: batch/v1
+kind: CronJob
+metadata:
+  name: fuel-price-checker-cron
+spec:
+  # Prices get updated every sunday at 20:00 Amsterdam time
+  schedule: "30 18 * * 0" # 20:30 Amsterdam time is equivalent to 18:30 UTC
+  jobTemplate:
+    spec:
+      template:
+        spec:
+          containers:
+          - name: fuel-price-checker
+            image: ghcr.io/y0sh1/scorenmetandy-prijzen:v0.0.4
+            imagePullPolicy: IfNotPresent
+            envFrom:
+            - configMapRef:
+                name: fuel-price-checker-config
+            command: ["python", "main.py"]
