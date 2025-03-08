@@ -2,8 +2,6 @@ name: Build and Publish Docker Image
 
 on:
   push:
-    branches:
-      - main  # Run on pushes to the main branch
     tags:
       - '*'   # Run when a new tag is pushed
 
