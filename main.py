@@ -15,8 +15,8 @@ def extract_fuel_prices(url):
 
     html_file_path = 'examples/fuel_prices_latest.html'
     if os.path.exists(html_file_path):
-    with open(html_file_path, 'r', encoding='utf-8') as file:
-        previous_html = file.read()
+        with open(html_file_path, 'r', encoding='utf-8') as file:
+            previous_html = file.read()
     else:
         previous_html = ""
 
