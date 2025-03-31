@@ -15,12 +15,6 @@ def extract_fuel_prices(url):
 
     html_file_path = 'examples/fuel_prices_latest.html'
     current_html = response.text
-    if not os.path.exists(html_file_path):
-        with open(html_file_path, 'w', encoding='utf-8') as file:
-            file.write(current_html)
-        print("Baseline HTML stored, starting live checks on the next run.")
-        return None
-
     with open(html_file_path, 'r', encoding='utf-8') as file:
         previous_html = file.read()
 
@@ -58,8 +52,15 @@ def extract_fuel_prices(url):
 
 url = "http://scorenmetandy.nl"
 
+state_file_path = 'examples/fuel_prices_state.json'
+if not os.path.exists(state_file_path):
+    with open(state_file_path, 'w', encoding='utf-8') as file:
+        file.write("{}")
+
 while True:
     json_output = extract_fuel_prices(url)
     if json_output:
+        with open(state_file_path, 'w', encoding='utf-8') as file:
+            file.write(json_output)
         print(json_output)
     time.sleep(900)
