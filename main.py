@@ -14,10 +14,13 @@ def extract_fuel_prices(url):
     os.makedirs('examples/', exist_ok=True)
 
     html_file_path = 'examples/fuel_prices_latest.html'
-    current_html = response.text
+    if os.path.exists(html_file_path):
     with open(html_file_path, 'r', encoding='utf-8') as file:
         previous_html = file.read()
+    else:
+        previous_html = ""
 
+    current_html = response.text
     if current_html == previous_html:
         print("No changes detected.")
         return None
@@ -53,6 +56,8 @@ def extract_fuel_prices(url):
 url = "http://scorenmetandy.nl"
 
 state_file_path = 'examples/fuel_prices_state.json'
+os.makedirs(os.path.dirname(state_file_path), exist_ok=True)
+
 if not os.path.exists(state_file_path):
     with open(state_file_path, 'w', encoding='utf-8') as file:
         file.write("{}")
