@@ -1,0 +1,29 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: fuel-price-checker-deployment
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: fuel-price-checker
+  template:
+    metadata:
+      labels:
+        app: fuel-price-checker
+    spec:
+      containers:
+      - name: fuel-price-checker
+            image: ghcr.io/y0sh1/scorenmetandy-prijzen:v0.0.6
+            imagePullPolicy: IfNotPresent
+            envFrom:
+            - configMapRef:
+                name: fuel-price-checker-config
+        resources:
+          requests:
+            memory: "128Mi"
+            cpu: "250m"
+          limits:
+            memory: "256Mi"
+            cpu: "500m"
+      restartPolicy: Always

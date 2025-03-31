@@ -4,22 +4,35 @@ import json
 import os
 from datetime import datetime
 import re
+import time
 
 def extract_fuel_prices(url):
     now = datetime.now()
-
     response = requests.get(url)
-
     if response.status_code != 200:
         raise Exception("Failed to load the webpage.")
-
     os.makedirs('examples/', exist_ok=True)
-    with open(f'examples/fuel_prices_{now.strftime("%Y%m%d_%H%M%S")}.html', 'w', encoding='utf-8') as file:
-        file.write(response.text)
+
+    html_file_path = 'examples/fuel_prices_latest.html'
+    current_html = response.text
+    if not os.path.exists(html_file_path):
+        with open(html_file_path, 'w', encoding='utf-8') as file:
+            file.write(current_html)
+        print("Baseline HTML stored, starting live checks on the next run.")
+        return None
+
+    with open(html_file_path, 'r', encoding='utf-8') as file:
+        previous_html = file.read()
+
+    if current_html == previous_html:
+        print("No changes detected.")
+        return None
+
+    with open(html_file_path, 'w', encoding='utf-8') as file:
+        file.write(current_html)
+
     soup = BeautifulSoup(response.content, "html.parser")
-
     text = soup.get_text()
-
     pattern = r"(diesel|Euro 95|Superplus) voor €(\d+,\d+)"
     matches = re.findall(pattern, text)
     fuel_prices = {fuel: float(price.replace(',', '.')) for fuel, price in matches}
@@ -44,4 +57,9 @@ def extract_fuel_prices(url):
     return json_output
 
 url = "http://scorenmetandy.nl"
-print(extract_fuel_prices(url))
+
+while True:
+    json_output = extract_fuel_prices(url)
+    if json_output:
+        print(json_output)
+    time.sleep(900)
